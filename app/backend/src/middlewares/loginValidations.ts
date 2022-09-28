@@ -1,24 +1,32 @@
-import { Request, Response, NextFunction } from 'express';
 // import * as bcrypt from 'bcryptjs';
-import { IUser } from '../interfaces/IUser';
+import { Request, Response, NextFunction } from 'express';
+import { StatusCodes } from 'http-status-codes';
 import UsersModel from '../database/models/UserModel';
-import { unfilledData, incorrectData } from '../helpers';
+import UsersService from '../services/UsersService';
+import { IUser } from '../interfaces/IUser';
+import { invalidData, unfilledData, incorrectData } from '../helpers';
 
 class LoginValidation {
   private model = UsersModel;
+  constructor(private usersService = new UsersService()) { }
 
   public loginV = async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ message: unfilledData });
+      return res.status(StatusCodes.BAD_REQUEST).json({ message: unfilledData });
     }
 
     const user = await this.model.findOne({ where: { email }, raw: true }) as IUser;
-    console.log('USUÁRIO', user);
 
     if (!user) {
-      return res.status(401).json({ message: incorrectData });
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: incorrectData });
+    }
+
+    const token = await this.usersService.login(email, password);
+
+    if (!token) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: invalidData });
     }
 
     // if (!bcrypt.compareSync(password, user.password)) {

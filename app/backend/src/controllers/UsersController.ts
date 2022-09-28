@@ -1,5 +1,10 @@
+import { StatusCodes } from 'http-status-codes';
+import * as Jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
+import { JwtUser } from '../interfaces/IToken';
 import UsersService from '../services/UsersService';
+
+const JWT_SECRET = process.env.JWT_SECRET || 'jwt_secret';
 
 class UsersController {
   constructor(private usersService = new UsersService()) { }
@@ -9,11 +14,18 @@ class UsersController {
 
     const token = await this.usersService.login(email, password);
 
-    if (!token) {
-      return res.status(401).json({ message: 'Invalid data' });
-    }
+    return res.status(StatusCodes.OK).json({ token });
+  };
 
-    return res.status(200).json({ token });
+  public validate = async (req: Request, res: Response) => {
+    const { authorization } = req.headers;
+    const newAuthorization = authorization?.replace('Bearer ', '');
+
+    const userData = Jwt.verify(newAuthorization as string, JWT_SECRET);
+
+    const role = await this.usersService.validate(userData as JwtUser);
+
+    return res.status(StatusCodes.OK).json({ role });
   };
 }
 

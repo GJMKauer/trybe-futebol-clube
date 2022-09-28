@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcryptjs';
 import * as Jwt from 'jsonwebtoken';
-import { IToken } from '../interfaces/IToken';
+import { IToken, JwtUser } from '../interfaces/IToken';
 import { IUser } from '../interfaces/IUser';
 import UsersModel from '../database/models/UserModel';
 
@@ -23,6 +23,13 @@ class UserService {
     );
 
     return token as unknown as IToken;
+  }
+
+  public async validate(userData: JwtUser) {
+    const { userId } = userData;
+    const user = await this.model.findOne({ where: { id: userId }, raw: true }) as IUser;
+
+    return user.role;
   }
 }
 

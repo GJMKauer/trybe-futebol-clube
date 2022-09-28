@@ -18,8 +18,7 @@ class App {
     this.app.get('/', (req, res) => res.json({ ok: true }));
 
     this.app.post('/login', loginValidation.loginV, userController.login);
-
-    // this.app.post('/login', (req, res) => userController(req, res));
+    this.app.get('/login/validate', userController.validate);
   }
 
   private config():void {
