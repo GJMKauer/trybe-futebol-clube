@@ -13,6 +13,14 @@ class LoginValidation {
     if (!email || !password) {
       return res.status(400).json({ message: unfilledData });
     }
+
+    const user = await this.model.findOne({ where: { email }, raw: true }) as IUser;
+    console.log('USUÁRIO', user);
+
+    if (!user) {
+      return res.status(401).json({ message: incorrectData });
+    }
+
     // if (!bcrypt.compareSync(password, user.password)) {
     //   throw new Error('INVALID DATA');
     // }
