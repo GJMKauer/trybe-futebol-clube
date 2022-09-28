@@ -1,8 +1,11 @@
 import * as express from 'express';
 
 import UserController from './controllers/UsersController';
+import LoginValidation from './middlewares/loginValidations';
 
 const userController = new UserController();
+
+const loginValidation = new LoginValidation();
 
 class App {
   public app: express.Express;
@@ -14,7 +17,7 @@ class App {
 
     this.app.get('/', (req, res) => res.json({ ok: true }));
 
-    this.app.post('/login', userController.login);
+    this.app.post('/login', loginValidation.loginV, userController.login);
 
     // this.app.post('/login', (req, res) => userController(req, res));
   }

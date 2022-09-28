@@ -1,22 +1,24 @@
-// import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 // import * as bcrypt from 'bcryptjs';
-// import { IUser } from '../interfaces/IUser';
-// import UsersModel from '../database/models/UserModel';
+import { IUser } from '../interfaces/IUser';
+import UsersModel from '../database/models/UserModel';
+import { unfilledData, incorrectData } from '../helpers';
 
-// class LoginValidation {
-//   private model = UsersModel;
+class LoginValidation {
+  private model = UsersModel;
 
-//   public loginV = async (req: Request, res: Response, next: NextFunction) => {
-//     const { email, password } = req.body;
+  public loginV = async (req: Request, res: Response, next: NextFunction) => {
+    const { email, password } = req.body;
 
-//     const result = await this.model.findOne({ where: { email }, raw: true }) as IUser;
+    if (!email || !password) {
+      return res.status(400).json({ message: unfilledData });
+    }
+    // if (!bcrypt.compareSync(password, user.password)) {
+    //   throw new Error('INVALID DATA');
+    // }
 
-//     if (!bcrypt.compareSync(password, result.password)) {
-//       throw new Error('INVALID DATA');
-//     }
+    next();
+  };
+}
 
-//     next();
-//   };
-// }
-
-// export default LoginValidation;
+export default LoginValidation;
