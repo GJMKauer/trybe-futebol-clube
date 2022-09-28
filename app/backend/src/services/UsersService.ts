@@ -2,12 +2,12 @@ import * as bcrypt from 'bcryptjs';
 import * as Jwt from 'jsonwebtoken';
 import { IToken, JwtUser } from '../interfaces/IToken';
 import { IUser } from '../interfaces/IUser';
-import UsersModel from '../database/models/UserModel';
+import UserModel from '../database/models/UserModel';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'kozukioden';
 
 class UserService {
-  private model = UsersModel;
+  private model = UserModel;
 
   public async login(email: string, password: string): Promise<IToken> {
     const user = await this.model.findOne({ where: { email }, raw: true }) as IUser;
