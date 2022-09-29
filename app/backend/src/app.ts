@@ -36,6 +36,7 @@ class App {
       matchController.addNewMatch,
     );
     this.app.patch('/matches/:id/finish', matchController.finishMatch);
+    this.app.patch('/matches/:id', matchController.updateMatch);
   }
 
   private config(): void {
