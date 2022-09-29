@@ -3,7 +3,7 @@ import * as Jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import { JwtUser } from '../interfaces/IToken';
 import UsersService from '../services/UsersService';
-import { JWT_SECRET } from '../helpers';
+import { JWT_SECRET, notFoundToken } from '../helpers';
 
 class UsersController {
   constructor(private usersService = new UsersService()) { }
@@ -19,7 +19,11 @@ class UsersController {
   public validate = async (req: Request, res: Response) => {
     const { authorization } = req.headers;
 
-    const newAuthorization = authorization?.replace('Bearer ', '');
+    if (!authorization) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: notFoundToken });
+    }
+
+    const newAuthorization = authorization.replace('Bearer ', '');
 
     const userData = Jwt.verify(newAuthorization as string, JWT_SECRET);
 

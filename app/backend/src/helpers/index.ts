@@ -5,6 +5,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'jwt_secret';
 const invalidData = 'Invalid data';
 const unfilledData = 'All fields must be filled';
 const incorrectData = 'Incorrect email or password';
+const notFoundToken = 'You need a token to access this route';
 
 // Match validations
 const finishedMatch = 'Finished';
@@ -17,6 +18,7 @@ export {
   invalidData,
   unfilledData,
   incorrectData,
+  notFoundToken,
   finishedMatch,
   equalTeams,
   invalidTeams,

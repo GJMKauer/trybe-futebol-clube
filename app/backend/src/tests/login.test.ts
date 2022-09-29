@@ -12,18 +12,16 @@ import {
   invalidUser,
   userWithoutEmail,
   userWithoutPassword,
-} from './helpers';
+  userRole,
+  userToken,
+} from './test_helpers';
 
 import {
-  JWT_SECRET,
-  equalTeams
-  ,finishedMatch,
   incorrectData,
   invalidData,
-  invalidTeams,
-  invalidToken,
   unfilledData,
-}from '../helpers';
+  notFoundToken,
+} from '../helpers';
 
 chai.use(chaiHttp);
 
@@ -60,7 +58,7 @@ describe('Route /login tests', () => {
       it('Should return error message with status 401', async () => {
         const response = await chai.request(app).post('/login').send(invalidUser);
 
-        expect(response.body).to.be.deep.equal({ message: invalidData });
+        expect(response.body).to.be.deep.equal({ message: incorrectData });
         expect(response.status).to.be.equal(STATUS_CODES.UNAUTHORIZED);
       });
     });
@@ -100,4 +98,32 @@ describe('Route /login tests', () => {
       });
     });
   });
-})
+
+  describe('GET /login/validate:', () => {
+    describe('When it receives a valid token', () => {
+      beforeEach(() => {
+        sinon.stub(UserModel, 'findOne').resolves(userRole as UserModel)
+      });
+
+      afterEach(() => {
+        (UserModel.findOne as sinon.SinonStub).restore();
+      });
+
+      it('Should return user role with status 200', async () => {
+        const response = await chai.request(app).get('/login/validate').set('authorization', userToken);
+
+        expect(response.body).to.be.deep.equal({ role: userRole.role });
+        expect(response.status).to.be.equal(STATUS_CODES.OK);
+      });
+    });
+
+    describe('When it does not receive a token', () => {
+      it('Should return error message with status 401', async () => {
+        const response = await chai.request(app).get('/login/validate');
+
+        expect(response.body).to.be.deep.equal({ message: notFoundToken });
+        expect(response.status).to.be.equal(STATUS_CODES.UNAUTHORIZED);
+      });
+    });
+  });  
+});
