@@ -2,11 +2,10 @@ import * as sinon from 'sinon';
 import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
-
 import { app } from '../app';
 import UserModel from '../database/models/UserModel';
+
 import {
-  STATUS_CODES,
   validUser,
   validUserDecoded,
   invalidUser,
@@ -14,7 +13,9 @@ import {
   userWithoutPassword,
   userRole,
   userToken,
-} from './test_helpers';
+} from './test_helpers/userMocks';
+
+import STATUS_CODES from './test_helpers';
 
 import {
   incorrectData,
