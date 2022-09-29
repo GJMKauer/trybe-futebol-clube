@@ -41,6 +41,12 @@ class MatchesService {
 
     return team as unknown as IMatch[];
   }
+
+  public async addNewMatch(matchArgs: object): Promise<IMatch> {
+    const newMatch = await this.model.create(matchArgs);
+
+    return newMatch as unknown as IMatch;
+  }
 }
 
 export default MatchesService;

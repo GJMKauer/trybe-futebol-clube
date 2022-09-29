@@ -27,6 +27,22 @@ class MatchController {
 
     return res.status(StatusCodes.OK).json(filteredMatches);
   };
+
+  public addNewMatch = async (req: Request, res: Response) => {
+    const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
+    console.log(req.body);
+    const inProgress = true;
+
+    const match = await this.matchesService.addNewMatch({
+      homeTeam,
+      awayTeam,
+      homeTeamGoals,
+      awayTeamGoals,
+      inProgress,
+    });
+
+    return res.status(StatusCodes.CREATED).json(match);
+  };
 }
 
 export default MatchController;
