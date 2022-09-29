@@ -47,6 +47,14 @@ class MatchesService {
 
     return newMatch as unknown as IMatch;
   }
+
+  public async finishMatch(id: string) {
+    const match = await this.model.findOne({ where: { id } });
+
+    const updatedMatch = await match?.update({ inProgress: false });
+
+    return updatedMatch;
+  }
 }
 
 export default MatchesService;
