@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import { Request, Response } from 'express';
 import MatchesService from '../services/MatchesService';
+import { finishedMatch } from '../helpers/index';
 
 class MatchController {
   constructor(private matchesService = new MatchesService()) { }
@@ -30,7 +31,6 @@ class MatchController {
 
   public addNewMatch = async (req: Request, res: Response) => {
     const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
-    console.log(req.body);
     const inProgress = true;
 
     const match = await this.matchesService.addNewMatch({
@@ -47,9 +47,9 @@ class MatchController {
   public finishMatch = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const match = await this.matchesService.finishMatch(id);
+    await this.matchesService.finishMatch(id);
 
-    return res.status(StatusCodes.OK).json(match);
+    return res.status(StatusCodes.OK).json({ message: finishedMatch });
   };
 }
 

@@ -5,12 +5,14 @@ import TeamController from './controllers/TeamsController';
 import MatchController from './controllers/MatchController';
 
 import LoginValidation from './middlewares/loginValidations';
+import MatchValidation from './middlewares/matchValidations';
 
 const userController = new UserController();
 const teamController = new TeamController();
 const matchController = new MatchController();
 
 const loginValidation = new LoginValidation();
+const matchValidations = new MatchValidation();
 
 class App {
   public app: express.Express;
@@ -26,7 +28,7 @@ class App {
     this.app.get('/teams', teamController.getAllTeams);
     this.app.get('/teams/:id', teamController.getTeamById);
     this.app.get('/matches', matchController.getMatchesByProgress);
-    this.app.post('/matches', matchController.addNewMatch);
+    this.app.post('/matches', matchValidations.createMatchV, matchController.addNewMatch);
     this.app.patch('/matches/:id/finish', matchController.finishMatch);
   }
 
@@ -49,5 +51,4 @@ class App {
 
 export { App };
 
-// A execução dos testes de cobertura depende dessa exportação
 export const { app } = new App();

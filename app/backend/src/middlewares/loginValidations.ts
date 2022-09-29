@@ -1,13 +1,13 @@
 // import * as bcrypt from 'bcryptjs';
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import UsersModel from '../database/models/UserModel';
+import UserModel from '../database/models/UserModel';
 import UsersService from '../services/UsersService';
 import { IUser } from '../interfaces/IUser';
 import { invalidData, unfilledData, incorrectData } from '../helpers';
 
 class LoginValidation {
-  private model = UsersModel;
+  private model = UserModel;
   constructor(private usersService = new UsersService()) { }
 
   public loginV = async (req: Request, res: Response, next: NextFunction) => {

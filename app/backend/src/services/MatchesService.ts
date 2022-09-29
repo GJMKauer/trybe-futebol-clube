@@ -19,8 +19,6 @@ class MatchesService {
       }],
     });
 
-    console.log('PEGUEI TODOS');
-
     return team as unknown as IMatch[];
   }
 
