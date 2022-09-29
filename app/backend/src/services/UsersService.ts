@@ -3,8 +3,7 @@ import * as Jwt from 'jsonwebtoken';
 import { IToken, JwtUser } from '../interfaces/IToken';
 import { IUser } from '../interfaces/IUser';
 import UserModel from '../database/models/UserModel';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'kozukioden';
+import { JWT_SECRET } from '../helpers';
 
 class UserService {
   private model = UserModel;

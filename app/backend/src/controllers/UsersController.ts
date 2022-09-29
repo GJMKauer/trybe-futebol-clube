@@ -3,8 +3,7 @@ import * as Jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import { JwtUser } from '../interfaces/IToken';
 import UsersService from '../services/UsersService';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'jwt_secret';
+import { JWT_SECRET } from '../helpers';
 
 class UsersController {
   constructor(private usersService = new UsersService()) { }
