@@ -19,6 +19,7 @@ class UsersController {
 
   public validate = async (req: Request, res: Response) => {
     const { authorization } = req.headers;
+
     const newAuthorization = authorization?.replace('Bearer ', '');
 
     const userData = Jwt.verify(newAuthorization as string, JWT_SECRET);
