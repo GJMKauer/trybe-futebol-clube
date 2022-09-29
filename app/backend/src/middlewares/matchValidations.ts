@@ -1,8 +1,9 @@
+import * as Jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import MatchModel from '../database/models/MatchModel';
 import MatchesService from '../services/MatchesService';
-import { equalTeams, invalidTeams } from '../helpers';
+import { equalTeams, invalidTeams, invalidToken, JWT_SECRET } from '../helpers';
 
 class MatchValidation {
   private model = MatchModel;
@@ -29,6 +30,20 @@ class MatchValidation {
     }
 
     next();
+  };
+
+  public checkTokenV = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { authorization } = req.headers;
+
+      const newAuthorization = authorization?.replace('Bearer ', '');
+
+      Jwt.verify(newAuthorization as string, JWT_SECRET);
+
+      next();
+    } catch (error) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: invalidToken });
+    }
   };
 }
 

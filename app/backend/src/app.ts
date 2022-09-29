@@ -32,6 +32,7 @@ class App {
       '/matches',
       matchValidations.createMatchV,
       matchValidations.checkTeamsV,
+      matchValidations.checkTokenV,
       matchController.addNewMatch,
     );
     this.app.patch('/matches/:id/finish', matchController.finishMatch);
