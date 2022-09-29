@@ -25,7 +25,7 @@ class App {
     this.app.get('/login/validate', userController.validate);
     this.app.get('/teams', teamController.getAllTeams);
     this.app.get('/teams/:id', teamController.getTeamById);
-    this.app.get('/matches', matchController.getAllMatches);
+    this.app.get('/matches', matchController.getMatchesByProgress);
   }
 
   private config(): void {

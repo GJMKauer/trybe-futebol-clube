@@ -8,9 +8,24 @@ class MatchController {
   public getAllMatches = async (req: Request, res: Response) => {
     const matches = await this.matchesService.getAllMatches();
 
-    console.log('TIME AQUI', matches);
-
     return res.status(StatusCodes.OK).json(matches);
+  };
+
+  public getMatchesByProgress = async (req: Request, res: Response) => {
+    const { inProgress } = req.query;
+
+    if (inProgress !== 'true' && inProgress !== 'false') {
+      const matches = await this.matchesService.getAllMatches();
+
+      return res.status(StatusCodes.OK).json(matches);
+    }
+
+    const q = inProgress === 'true';
+
+    const filteredMatches = await this
+      .matchesService.getMatchesByProgress(q);
+
+    return res.status(StatusCodes.OK).json(filteredMatches);
   };
 }
 

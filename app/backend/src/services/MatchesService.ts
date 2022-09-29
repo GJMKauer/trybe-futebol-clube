@@ -19,7 +19,25 @@ class MatchesService {
       }],
     });
 
-    console.log('TIME AQUI', team);
+    console.log('PEGUEI TODOS');
+
+    return team as unknown as IMatch[];
+  }
+
+  public async getMatchesByProgress(q: boolean): Promise<IMatch[]> {
+    const team = await this.model.findAll({
+      where: { inProgress: q },
+      include: [{
+        model: TeamModel,
+        as: 'teamHome',
+        attributes: ['teamName'],
+      },
+      {
+        model: TeamModel,
+        as: 'teamAway',
+        attributes: ['teamName'],
+      }],
+    });
 
     return team as unknown as IMatch[];
   }
