@@ -28,7 +28,12 @@ class App {
     this.app.get('/teams', teamController.getAllTeams);
     this.app.get('/teams/:id', teamController.getTeamById);
     this.app.get('/matches', matchController.getMatchesByProgress);
-    this.app.post('/matches', matchValidations.createMatchV, matchController.addNewMatch);
+    this.app.post(
+      '/matches',
+      matchValidations.createMatchV,
+      matchValidations.checkTeamsV,
+      matchController.addNewMatch,
+    );
     this.app.patch('/matches/:id/finish', matchController.finishMatch);
   }
 
