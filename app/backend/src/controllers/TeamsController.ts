@@ -6,17 +6,17 @@ class TeamsController {
   constructor(private teamsService = new TeamsService()) { }
 
   public getAllTeams = async (req: Request, res: Response) => {
-    const result = await this.teamsService.getAllTeams();
+    const teams = await this.teamsService.getAllTeams();
 
-    return res.status(StatusCodes.OK).json(result);
+    return res.status(StatusCodes.OK).json(teams);
   };
 
   public getTeamById = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const result = await this.teamsService.getTeamById(id);
+    const team = await this.teamsService.getTeamById(id);
 
-    return res.status(StatusCodes.OK).json(result);
+    return res.status(StatusCodes.OK).json(team);
   };
 }
 
