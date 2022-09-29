@@ -5,9 +5,15 @@ class TeamsService {
   private model = TeamModel;
 
   public async getAllTeams(): Promise<ITeam[]> {
-    const user = await this.model.findAll();
+    const team = await this.model.findAll();
 
-    return user;
+    return team;
+  }
+
+  public async getTeamById(id: string): Promise<ITeam> {
+    const team = await this.model.findOne({ where: { id } });
+
+    return team as ITeam;
   }
 }
 
