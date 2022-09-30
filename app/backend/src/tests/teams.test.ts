@@ -12,13 +12,6 @@ import {
 
 import STATUS_CODES from './test_helpers';
 
-import {
-  incorrectData,
-  invalidData,
-  unfilledData,
-  notFoundToken,
-} from '../helpers';
-
 chai.use(chaiHttp);
 
 const { expect } = chai;
