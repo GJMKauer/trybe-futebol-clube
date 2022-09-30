@@ -49,7 +49,11 @@ class MatchesService {
   public async finishMatch(id: string) {
     const match = await this.model.findByPk(id);
 
-    const finishedMatch = await match?.update({ inProgress: false });
+    if (!match) {
+      return null;
+    }
+
+    const finishedMatch = await match.update({ inProgress: false });
 
     return finishedMatch;
   }
@@ -57,7 +61,11 @@ class MatchesService {
   public async updateMatch(id: string, homeTeamGoals: number, awayTeamGoals: number) {
     const matchToBeUpdated = await this.model.findByPk(id);
 
-    const updatedMatch = await matchToBeUpdated?.update({ homeTeamGoals, awayTeamGoals });
+    if (!matchToBeUpdated) {
+      return null;
+    }
+
+    const updatedMatch = await matchToBeUpdated.update({ homeTeamGoals, awayTeamGoals });
 
     return updatedMatch;
   }

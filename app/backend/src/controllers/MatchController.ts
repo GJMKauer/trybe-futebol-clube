@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import { Request, Response } from 'express';
 import MatchesService from '../services/MatchesService';
-import { finishedMatch } from '../helpers/index';
+import { finishedMatch, notFoundMatch } from '../helpers/index';
 
 class MatchController {
   constructor(private matchesService = new MatchesService()) { }
@@ -15,10 +15,8 @@ class MatchController {
   public getMatchesByProgress = async (req: Request, res: Response) => {
     const { inProgress } = req.query;
 
-    if (inProgress !== 'true' && inProgress !== 'false') {
-      const matches = await this.matchesService.getAllMatches();
-
-      return res.status(StatusCodes.OK).json(matches);
+    if (!inProgress || (inProgress !== 'true' && inProgress !== 'false')) {
+      return this.getAllMatches(req, res);
     }
 
     const q = inProgress === 'true';
@@ -47,7 +45,11 @@ class MatchController {
   public finishMatch = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    await this.matchesService.finishMatch(id);
+    const result = await this.matchesService.finishMatch(id);
+
+    if (!result) {
+      return res.status(StatusCodes.NOT_FOUND).json({ message: notFoundMatch });
+    }
 
     return res.status(StatusCodes.OK).json({ message: finishedMatch });
   };
@@ -57,6 +59,10 @@ class MatchController {
     const { homeTeamGoals, awayTeamGoals } = req.body;
 
     const updatedMatch = await this.matchesService.updateMatch(id, homeTeamGoals, awayTeamGoals);
+
+    if (!updatedMatch) {
+      return res.status(StatusCodes.NOT_FOUND).json({ message: notFoundMatch });
+    }
 
     return res.status(StatusCodes.OK).json(updatedMatch);
   };
