@@ -33,7 +33,7 @@ class LeaderboardService {
         existingItem.goalsOwn += item.goalsOwn;
         existingItem.goalsBalance += item.goalsBalance;
         existingItem.efficiency = Number((((existingItem.totalPoints)
-        / (((existingItem.totalGames) * 3))) * 100).toFixed(2));
+          / (((existingItem.totalGames) * 3))) * 100).toFixed(2));
       } else acc.push(item);
 
       return acc;
@@ -47,10 +47,10 @@ class LeaderboardService {
 
     const sortedLeaderboard = (await unsortedLeaderboard)
       .sort((a, b) => b.totalPoints - a.totalPoints
-    || b.totalVictories - a.totalVictories
-    || b.goalsBalance - a.goalsBalance
-    || b.goalsFavor - a.goalsFavor
-    || b.totalGames + a.totalGames);
+        || b.totalVictories - a.totalVictories
+        || b.goalsBalance - a.goalsBalance
+        || b.goalsFavor - a.goalsFavor
+        || b.totalGames + a.totalGames);
 
     return sortedLeaderboard;
   }
