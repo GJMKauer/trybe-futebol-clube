@@ -1,4 +1,3 @@
-// import * as bcrypt from 'bcryptjs';
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import UserModel from '../database/models/UserModel';
@@ -28,10 +27,6 @@ class LoginValidation {
     if (!token) {
       return res.status(StatusCodes.UNAUTHORIZED).json({ message: invalidData });
     }
-
-    // if (!bcrypt.compareSync(password, user.password)) {
-    //   throw new Error('INVALID DATA');
-    // }
 
     next();
   };
