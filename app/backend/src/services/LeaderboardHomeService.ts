@@ -1,4 +1,4 @@
-import sequelize = require('sequelize');
+import * as sequelize from 'sequelize';
 import TeamModel from '../database/models/TeamModel';
 import MatchModel from '../database/models/MatchModel';
 import { ILeaderboard } from '../interfaces/ILeaderboard';

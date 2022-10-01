@@ -12,8 +12,9 @@ route.post(
   matchValidations.createMatchV,
   matchValidations.checkTeamsV,
   matchValidations.checkTokenV,
-  matchController.addNewMatch);
+  matchController.addNewMatch,
+);
 route.patch('/:id/finish', matchController.finishMatch);
-route.patch('/:id', matchController.updateMatch)
+route.patch('/:id', matchController.updateMatch);
 
 export default route;

@@ -2,12 +2,10 @@ import * as Jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import MatchModel from '../database/models/MatchModel';
-import MatchService from '../services/MatchService';
 import { equalTeams, invalidTeams, invalidToken, JWT_SECRET } from '../helpers';
 
 class MatchValidation {
   private model = MatchModel;
-  constructor(private matchService = new MatchService()) { }
 
   public createMatchV = async (req: Request, res: Response, next: NextFunction) => {
     const { homeTeam, awayTeam } = req.body;
