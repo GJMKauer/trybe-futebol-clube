@@ -2,13 +2,13 @@
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import UserModel from '../database/models/UserModel';
-import UsersService from '../services/UsersService';
+import UserService from '../services/UserService';
 import { IUser } from '../interfaces/IUser';
 import { invalidData, unfilledData, incorrectData } from '../helpers';
 
 class LoginValidation {
   private model = UserModel;
-  constructor(private usersService = new UsersService()) { }
+  constructor(private userService = new UserService()) { }
 
   public loginV = async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
@@ -23,7 +23,7 @@ class LoginValidation {
       return res.status(StatusCodes.UNAUTHORIZED).json({ message: incorrectData });
     }
 
-    const token = await this.usersService.login(email, password);
+    const token = await this.userService.login(email, password);
 
     if (!token) {
       return res.status(StatusCodes.UNAUTHORIZED).json({ message: invalidData });

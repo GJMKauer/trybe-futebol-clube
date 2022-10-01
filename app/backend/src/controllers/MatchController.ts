@@ -1,13 +1,13 @@
 import { StatusCodes } from 'http-status-codes';
 import { Request, Response } from 'express';
-import MatchesService from '../services/MatchesService';
+import MatchService from '../services/MatchService';
 import { finishedMatch, notFoundMatch } from '../helpers/index';
 
 class MatchController {
-  constructor(private matchesService = new MatchesService()) { }
+  constructor(private matchService = new MatchService()) { }
 
-  public getAllMatches = async (req: Request, res: Response) => {
-    const matches = await this.matchesService.getAllMatches();
+  public getAllMatches = async (_req: Request, res: Response) => {
+    const matches = await this.matchService.getAllMatches();
 
     return res.status(StatusCodes.OK).json(matches);
   };
@@ -22,7 +22,7 @@ class MatchController {
     const q = inProgress === 'true';
 
     const filteredMatches = await this
-      .matchesService.getMatchesByProgress(q);
+      .matchService.getMatchesByProgress(q);
 
     return res.status(StatusCodes.OK).json(filteredMatches);
   };
@@ -31,7 +31,7 @@ class MatchController {
     const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
     const inProgress = true;
 
-    const match = await this.matchesService.addNewMatch({
+    const match = await this.matchService.addNewMatch({
       homeTeam,
       awayTeam,
       homeTeamGoals,
@@ -45,7 +45,7 @@ class MatchController {
   public finishMatch = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const result = await this.matchesService.finishMatch(id);
+    const result = await this.matchService.finishMatch(id);
 
     if (!result) {
       return res.status(StatusCodes.NOT_FOUND).json({ message: notFoundMatch });
@@ -58,7 +58,7 @@ class MatchController {
     const { id } = req.params;
     const { homeTeamGoals, awayTeamGoals } = req.body;
 
-    const updatedMatch = await this.matchesService.updateMatch(id, homeTeamGoals, awayTeamGoals);
+    const updatedMatch = await this.matchService.updateMatch(id, homeTeamGoals, awayTeamGoals);
 
     if (!updatedMatch) {
       return res.status(StatusCodes.NOT_FOUND).json({ message: notFoundMatch });

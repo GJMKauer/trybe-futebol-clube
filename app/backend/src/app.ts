@@ -1,20 +1,10 @@
 import * as express from 'express';
 
-import UserController from './controllers/UsersController';
-import TeamController from './controllers/TeamsController';
-import MatchController from './controllers/MatchController';
-import LeaderboardHomeController from './controllers/LeaderboardHomeController';
-
-import LoginValidation from './middlewares/loginValidations';
-import MatchValidation from './middlewares/matchValidations';
-
-const userController = new UserController();
-const teamController = new TeamController();
-const matchController = new MatchController();
-
-const loginValidation = new LoginValidation();
-const matchValidations = new MatchValidation();
-const leaderboardHomeController = new LeaderboardHomeController();
+import loginRoute from './routes/loginRoute';
+import teamRoute from './routes/teamRoute';
+import matchRoute from './routes/matchRoute';
+import leaderboardHomeRoute from './routes/leaderboardHomeRoute';
+import leaderboardAwayRoute from './routes/leaderboardAwayRoute';
 
 class App {
   public app: express.Express;
@@ -25,21 +15,11 @@ class App {
     this.config();
 
     this.app.get('/', (req, res) => res.json({ ok: true }));
-    this.app.post('/login', loginValidation.loginV, userController.login);
-    this.app.get('/login/validate', userController.validate);
-    this.app.get('/teams', teamController.getAllTeams);
-    this.app.get('/teams/:id', teamController.getTeamById);
-    this.app.get('/matches', matchController.getMatchesByProgress);
-    this.app.post(
-      '/matches',
-      matchValidations.createMatchV,
-      matchValidations.checkTeamsV,
-      matchValidations.checkTokenV,
-      matchController.addNewMatch,
-    );
-    this.app.patch('/matches/:id/finish', matchController.finishMatch);
-    this.app.patch('/matches/:id', matchController.updateMatch);
-    this.app.get('/leaderboard/home', leaderboardHomeController.getLeaderboard);
+    this.app.use('/login', loginRoute);
+    this.app.use('/teams', teamRoute);
+    this.app.use('/matches', matchRoute);
+    this.app.use('/leaderboard/home', leaderboardHomeRoute);
+    this.app.use('/leaderboard/away', leaderboardAwayRoute);
   }
 
   private config(): void {

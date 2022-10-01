@@ -2,16 +2,16 @@ import { StatusCodes } from 'http-status-codes';
 import * as Jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import { JwtUser } from '../interfaces/IToken';
-import UsersService from '../services/UsersService';
+import UserService from '../services/UserService';
 import { JWT_SECRET, notFoundToken } from '../helpers';
 
 class UsersController {
-  constructor(private usersService = new UsersService()) { }
+  constructor(private userService = new UserService()) { }
 
   public login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
-    const token = await this.usersService.login(email, password);
+    const token = await this.userService.login(email, password);
 
     return res.status(StatusCodes.OK).json({ token });
   };
@@ -27,7 +27,7 @@ class UsersController {
 
     const userData = Jwt.verify(newAuthorization as string, JWT_SECRET);
 
-    const role = await this.usersService.validate(userData as JwtUser);
+    const role = await this.userService.validate(userData as JwtUser);
 
     return res.status(StatusCodes.OK).json({ role });
   };

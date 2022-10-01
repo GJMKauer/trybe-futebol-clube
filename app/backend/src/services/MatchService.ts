@@ -2,7 +2,7 @@ import TeamModel from '../database/models/TeamModel';
 import MatchModel from '../database/models/MatchModel';
 import { IMatch } from '../interfaces/IMatch';
 
-class MatchesService {
+class MatchService {
   private model = MatchModel;
 
   public async getAllMatches(): Promise<IMatch[]> {
@@ -71,4 +71,4 @@ class MatchesService {
   }
 }
 
-export default MatchesService;
+export default MatchService;

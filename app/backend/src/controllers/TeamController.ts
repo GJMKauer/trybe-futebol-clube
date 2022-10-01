@@ -1,12 +1,12 @@
 import { StatusCodes } from 'http-status-codes';
 import { Request, Response } from 'express';
-import TeamsService from '../services/TeamsService';
+import TeamService from '../services/TeamService';
 
 class TeamsController {
-  constructor(private teamsService = new TeamsService()) { }
+  constructor(private teamService = new TeamService()) { }
 
   public getAllTeams = async (req: Request, res: Response) => {
-    const teams = await this.teamsService.getAllTeams();
+    const teams = await this.teamService.getAllTeams();
 
     return res.status(StatusCodes.OK).json(teams);
   };
@@ -14,7 +14,7 @@ class TeamsController {
   public getTeamById = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const team = await this.teamsService.getTeamById(id);
+    const team = await this.teamService.getTeamById(id);
 
     return res.status(StatusCodes.OK).json(team);
   };
