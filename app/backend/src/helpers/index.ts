@@ -14,6 +14,12 @@ const invalidTeams = 'There is no team with such id!';
 const invalidToken = 'Token must be a valid token';
 const notFoundMatch = 'Match not found';
 
+// Leaderboard validations
+const sumPoints = `SUM(home_team_goals > away_team_goals) * 3 
++ SUM(home_team_goals = away_team_goals)`;
+const convertEfficiency = `CONVERT(((SUM(home_team_goals > away_team_goals) * 3) 
++ SUM(home_team_goals = away_team_goals)) / (COUNT(home_team) * 3) * 100, DECIMAL(10,2))`;
+
 export {
   JWT_SECRET,
   invalidData,
@@ -25,4 +31,6 @@ export {
   invalidTeams,
   invalidToken,
   notFoundMatch,
+  sumPoints,
+  convertEfficiency,
 };

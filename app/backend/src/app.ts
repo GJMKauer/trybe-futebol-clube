@@ -3,6 +3,7 @@ import * as express from 'express';
 import UserController from './controllers/UsersController';
 import TeamController from './controllers/TeamsController';
 import MatchController from './controllers/MatchController';
+import LeaderboardHomeController from './controllers/LeaderboardHomeController';
 
 import LoginValidation from './middlewares/loginValidations';
 import MatchValidation from './middlewares/matchValidations';
@@ -13,6 +14,7 @@ const matchController = new MatchController();
 
 const loginValidation = new LoginValidation();
 const matchValidations = new MatchValidation();
+const leaderboardHomeController = new LeaderboardHomeController();
 
 class App {
   public app: express.Express;
@@ -37,6 +39,7 @@ class App {
     );
     this.app.patch('/matches/:id/finish', matchController.finishMatch);
     this.app.patch('/matches/:id', matchController.updateMatch);
+    this.app.get('/leaderboard/home', leaderboardHomeController.getLeaderboard);
   }
 
   private config(): void {
