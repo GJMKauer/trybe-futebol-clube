@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import { Request, Response } from 'express';
 import LeaderboardHomeService from '../services/LeaderboardHomeService';
 
-class LeaderboardController {
+class LeaderboardHomeController {
   constructor(private leaderboardHomeService = new LeaderboardHomeService()) { }
 
   public getLeaderboard = async (req: Request, res: Response) => {
@@ -12,4 +12,4 @@ class LeaderboardController {
   };
 }
 
-export default LeaderboardController;
+export default LeaderboardHomeController;

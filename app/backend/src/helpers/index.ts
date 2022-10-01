@@ -14,11 +14,17 @@ const invalidTeams = 'There is no team with such id!';
 const invalidToken = 'Token must be a valid token';
 const notFoundMatch = 'Match not found';
 
-// Leaderboard validations
-const sumPoints = `SUM(home_team_goals > away_team_goals) * 3 
+// LeaderboardHome validations
+const sumPointsHome = `SUM(home_team_goals > away_team_goals) * 3 
 + SUM(home_team_goals = away_team_goals)`;
-const convertEfficiency = `CONVERT(((SUM(home_team_goals > away_team_goals) * 3) 
+const convertEfficiencyHome = `CONVERT(((SUM(home_team_goals > away_team_goals) * 3) 
 + SUM(home_team_goals = away_team_goals)) / (COUNT(home_team) * 3) * 100, DECIMAL(10,2))`;
+
+// LeaderboardAway validations
+const sumPointsAway = `SUM(away_team_goals > home_team_goals) * 3 
++ SUM(away_team_goals = home_team_goals)`;
+const convertEfficiencyAway = `CONVERT(((SUM(away_team_goals > home_team_goals) * 3) 
++ SUM(away_team_goals = home_team_goals)) / (COUNT(home_team) * 3) * 100, DECIMAL(10,2))`;
 
 export {
   JWT_SECRET,
@@ -31,6 +37,8 @@ export {
   invalidTeams,
   invalidToken,
   notFoundMatch,
-  sumPoints,
-  convertEfficiency,
+  sumPointsHome,
+  convertEfficiencyHome,
+  sumPointsAway,
+  convertEfficiencyAway,
 };
