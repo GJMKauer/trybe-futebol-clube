@@ -91,7 +91,7 @@ describe('Route /matches tests', () => {
         returnHttp = await chai.request(app).post('/login').send(validUserDatabase);
 
         response = await chai.request(app).post('/matches').set('authorization', returnHttp.body.token).send(newMatch);
-        sinon.stub(MatchModel, 'findOne').resolves(newMatch as unknown as MatchModel)
+        sinon.stub(MatchModel, 'findOne').resolves(newMatch as MatchModel)
       });
 
       afterEach(() => {
@@ -101,7 +101,7 @@ describe('Route /matches tests', () => {
       it('Should have the new match added to database', async () => {
         expect(response.body).to.be.deep.equal({ ...newMatch, id: response.body.id, inProgress: response.body.inProgress });
         expect(response.status).to.be.equal(STATUS_CODES.CREATED);
-      })
+      });
     });
 
     describe('When trying to add a new match to database with two equal teams', async () => {
@@ -111,7 +111,7 @@ describe('Route /matches tests', () => {
         returnHttp = await chai.request(app).post('/login').send(validUserDatabase);
 
         response = await chai.request(app).post('/matches').set('authorization', returnHttp.body.token).send(newMatchEqualTeams);
-        sinon.stub(MatchModel, 'findOne').resolves(newMatchEqualTeams as unknown as MatchModel)
+        sinon.stub(MatchModel, 'findOne').resolves(newMatchEqualTeams as MatchModel)
       });
 
       afterEach(() => {
@@ -121,7 +121,7 @@ describe('Route /matches tests', () => {
       it('Should return an error saying that you can\'t add a new match with two equal teams with status 401', async () => {
         expect(response.body).to.be.deep.equal({ message: equalTeams });
         expect(response.status).to.be.equal(STATUS_CODES.UNAUTHORIZED);
-      })
+      });
     });
 
     describe('When trying to add a new match to database with a team that does not exist on database', async () => {
@@ -131,7 +131,7 @@ describe('Route /matches tests', () => {
         returnHttp = await chai.request(app).post('/login').send(validUserDatabase);
 
         response = await chai.request(app).post('/matches').set('authorization', returnHttp.body.token).send(newMatchNonExistentTeams);
-        sinon.stub(MatchModel, 'findOne').resolves(newMatchNonExistentTeams as unknown as MatchModel)
+        sinon.stub(MatchModel, 'findOne').resolves(newMatchNonExistentTeams as MatchModel)
       });
 
       afterEach(() => {
@@ -141,14 +141,14 @@ describe('Route /matches tests', () => {
       it('Should return an error saying that you can\'t add a new match with teams that does not exist on database', async () => {
         expect(response.body).to.be.deep.equal({ message: invalidTeams });
         expect(response.status).to.be.equal(STATUS_CODES.NOT_FOUND);
-      })
+      });
     });
 
     describe('When trying to add a new match to database without being logged in', async () => {
       let response: Response;
       beforeEach(async () => {
         response = await chai.request(app).post('/matches').send(newMatch);
-        sinon.stub(MatchModel, 'findOne').resolves(newMatch as unknown as MatchModel)
+        sinon.stub(MatchModel, 'findOne').resolves(newMatch as MatchModel)
       });
 
       afterEach(() => {
@@ -158,7 +158,7 @@ describe('Route /matches tests', () => {
       it('Should return an error saying that the user token is invalid', async () => {
         expect(response.body).to.be.deep.equal({ message: invalidToken });
         expect(response.status).to.be.equal(STATUS_CODES.UNAUTHORIZED);
-      })
+      });
     });
 
     describe('When trying to finish a match', async () => {
@@ -191,6 +191,6 @@ describe('Route /matches tests', () => {
         expect(response.body).to.be.deep.equal({ message: notFoundMatch });
         expect(response.status).to.be.equal(STATUS_CODES.NOT_FOUND);
       });
-    })
+    });
   });
 });
