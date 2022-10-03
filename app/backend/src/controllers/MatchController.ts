@@ -6,28 +6,28 @@ import { finishedMatch, notFoundMatch } from '../helpers/index';
 class MatchController {
   constructor(private matchService = new MatchService()) { }
 
-  public getAllMatches = async (_req: Request, res: Response) => {
+  public getAllMatches = async (_req: Request, res: Response): Promise<Response> => {
     const matches = await this.matchService.getAllMatches();
 
     return res.status(StatusCodes.OK).json(matches);
   };
 
-  public getMatchesByProgress = async (req: Request, res: Response) => {
+  public getMatchesByProgress = async (req: Request, res: Response): Promise<Response> => {
     const { inProgress } = req.query;
 
     if (!inProgress || (inProgress !== 'true' && inProgress !== 'false')) {
       return this.getAllMatches(req, res);
     }
 
-    const q = inProgress === 'true';
+    const query = inProgress === 'true';
 
     const filteredMatches = await this
-      .matchService.getMatchesByProgress(q);
+      .matchService.getMatchesByProgress(query);
 
     return res.status(StatusCodes.OK).json(filteredMatches);
   };
 
-  public addNewMatch = async (req: Request, res: Response) => {
+  public addNewMatch = async (req: Request, res: Response): Promise<Response> => {
     const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
     const inProgress = true;
 
@@ -42,7 +42,7 @@ class MatchController {
     return res.status(StatusCodes.CREATED).json(match);
   };
 
-  public finishMatch = async (req: Request, res: Response) => {
+  public finishMatch = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
 
     const result = await this.matchService.finishMatch(id);
@@ -54,7 +54,7 @@ class MatchController {
     return res.status(StatusCodes.OK).json({ message: finishedMatch });
   };
 
-  public updateMatch = async (req: Request, res: Response) => {
+  public updateMatch = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
     const { homeTeamGoals, awayTeamGoals } = req.body;
 

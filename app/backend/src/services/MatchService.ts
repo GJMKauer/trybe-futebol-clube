@@ -19,12 +19,12 @@ class MatchService {
       }],
     });
 
-    return team as unknown as IMatch[];
+    return team as IMatch[];
   }
 
-  public async getMatchesByProgress(q: boolean): Promise<IMatch[]> {
+  public async getMatchesByProgress(inProgress: boolean): Promise<IMatch[]> {
     const team = await this.model.findAll({
-      where: { inProgress: q },
+      where: { inProgress },
       include: [{
         model: TeamModel,
         as: 'teamHome',
@@ -37,16 +37,16 @@ class MatchService {
       }],
     });
 
-    return team as unknown as IMatch[];
+    return team as IMatch[];
   }
 
   public async addNewMatch(matchArgs: object): Promise<IMatch> {
     const newMatch = await this.model.create(matchArgs);
 
-    return newMatch as unknown as IMatch;
+    return newMatch as IMatch;
   }
 
-  public async finishMatch(id: string) {
+  public async finishMatch(id: string): Promise<IMatch | null> {
     const match = await this.model.findByPk(id);
 
     if (!match) {
@@ -58,7 +58,8 @@ class MatchService {
     return finishedMatch;
   }
 
-  public async updateMatch(id: string, homeTeamGoals: number, awayTeamGoals: number) {
+  public async updateMatch(id: string, homeTeamGoals: number, awayTeamGoals: number)
+    : Promise<IMatch | null> {
     const matchToBeUpdated = await this.model.findByPk(id);
 
     if (!matchToBeUpdated) {

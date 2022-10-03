@@ -3,11 +3,13 @@ import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import MatchModel from '../database/models/MatchModel';
 import { equalTeams, invalidTeams, invalidToken, JWT_SECRET } from '../helpers';
+import { IAuthorization } from '../interfaces/IAuthorization';
 
 class MatchValidation {
   private model = MatchModel;
 
-  public createMatchV = async (req: Request, res: Response, next: NextFunction) => {
+  public createMatchV = async (req: Request, res: Response, next: NextFunction):
+  Promise<Response | undefined> => {
     const { homeTeam, awayTeam } = req.body;
 
     if (homeTeam === awayTeam) {
@@ -17,7 +19,8 @@ class MatchValidation {
     next();
   };
 
-  public checkTeamsV = async (req: Request, res: Response, next: NextFunction) => {
+  public checkTeamsV = async (req: Request, res: Response, next: NextFunction):
+  Promise<Response | undefined> => {
     const { homeTeam, awayTeam } = req.body;
 
     const homeTeamExists = await this.model.findOne({ where: { homeTeam } });
@@ -30,11 +33,12 @@ class MatchValidation {
     next();
   };
 
-  public checkTokenV = async (req: Request, res: Response, next: NextFunction) => {
+  public checkTokenV = async (req: Request, res: Response, next: NextFunction):
+  Promise<Response | undefined> => {
     try {
-      const { authorization } = req.headers;
+      const { authorization } = req.headers as IAuthorization;
 
-      const newAuthorization = authorization?.replace('Bearer ', '');
+      const newAuthorization = authorization.replace('Bearer ', '');
 
       Jwt.verify(newAuthorization as string, JWT_SECRET);
 
