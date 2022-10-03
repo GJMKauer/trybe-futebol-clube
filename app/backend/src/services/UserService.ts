@@ -7,11 +7,11 @@ import tokenGenerate from '../helpers/JWTGenerator';
 class UserService {
   private model = UserModel;
 
-  public async login(email: string, password: string): Promise<IToken> {
+  public async login(email: string, password: string): Promise<IToken | null> {
     const user = await this.model.findOne({ where: { email }, raw: true }) as IUser;
 
     if (!bCryptValidation(password, user.password)) {
-      return null as unknown as IToken;
+      return null;
     }
 
     const token = tokenGenerate(user);

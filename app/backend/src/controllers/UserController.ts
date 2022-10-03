@@ -18,7 +18,7 @@ class UsersController {
   };
 
   public validate = async (req: Request, res: Response): Promise<Response> => {
-    const { authorization } = req.headers as unknown as IAuthorization;
+    const { authorization } = req.headers as IAuthorization;
 
     const newAuthorization = authorization.replace('Bearer ', '');
 
