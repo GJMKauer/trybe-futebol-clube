@@ -33,19 +33,19 @@ class LeaderboardHomeService {
     const leaderboard = await this.getLeaderboard();
 
     const mappedLeaderboard = leaderboard.map((item) => ({
-      name: (item.teamHome as unknown as ILeaderboard).teamName,
-      totalPoints: (item.dataValues as unknown as ILeaderboard).totalPoints,
-      totalGames: (item.dataValues as unknown as ILeaderboard).totalGames,
-      totalVictories: (item.dataValues as unknown as ILeaderboard).totalVictories,
-      totalDraws: (item.dataValues as unknown as ILeaderboard).totalDraws,
-      totalLosses: (item.dataValues as unknown as ILeaderboard).totalLosses,
-      goalsFavor: (item.dataValues as unknown as ILeaderboard).goalsFavor,
-      goalsOwn: (item.dataValues as unknown as ILeaderboard).goalsOwn,
-      goalsBalance: (item.dataValues as unknown as ILeaderboard).goalsBalance,
-      efficiency: (item.dataValues as unknown as ILeaderboard).efficiency,
+      name: (item.teamHome as ILeaderboard).teamName,
+      totalPoints: (item.dataValues as ILeaderboard).totalPoints,
+      totalGames: (item.dataValues as ILeaderboard).totalGames,
+      totalVictories: (item.dataValues as ILeaderboard).totalVictories,
+      totalDraws: (item.dataValues as ILeaderboard).totalDraws,
+      totalLosses: (item.dataValues as ILeaderboard).totalLosses,
+      goalsFavor: (item.dataValues as ILeaderboard).goalsFavor,
+      goalsOwn: (item.dataValues as ILeaderboard).goalsOwn,
+      goalsBalance: (item.dataValues as ILeaderboard).goalsBalance,
+      efficiency: (item.dataValues as ILeaderboard).efficiency,
     }));
 
-    return mappedLeaderboard as unknown as ILeaderboard[];
+    return mappedLeaderboard as ILeaderboard[];
   }
 }
 

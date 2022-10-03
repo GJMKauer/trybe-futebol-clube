@@ -5,7 +5,7 @@ import LeaderboardService from '../services/LeaderboardService';
 class LeaderboardController {
   constructor(private leaderboardService = new LeaderboardService()) { }
 
-  public getLeaderboard = async (req: Request, res: Response) => {
+  public getLeaderboard = async (req: Request, res: Response): Promise<Response> => {
     const leaderboard = await this.leaderboardService.sortLeaderboard();
 
     return res.status(StatusCodes.OK).json(leaderboard);

@@ -5,7 +5,7 @@ import LeaderboardAwayService from '../services/LeaderboardAwayService';
 class LeaderboardAwayController {
   constructor(private leaderboardAwayService = new LeaderboardAwayService()) { }
 
-  public getLeaderboard = async (req: Request, res: Response) => {
+  public getLeaderboard = async (req: Request, res: Response): Promise<Response> => {
     const leaderboard = await this.leaderboardAwayService.mapLeaderboard();
 
     return res.status(StatusCodes.OK).json(leaderboard);

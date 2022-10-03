@@ -5,7 +5,7 @@ import LeaderboardHomeService from '../services/LeaderboardHomeService';
 class LeaderboardHomeController {
   constructor(private leaderboardHomeService = new LeaderboardHomeService()) { }
 
-  public getLeaderboard = async (req: Request, res: Response) => {
+  public getLeaderboard = async (req: Request, res: Response): Promise<Response> => {
     const leaderboard = await this.leaderboardHomeService.mapLeaderboard();
 
     return res.status(StatusCodes.OK).json(leaderboard);

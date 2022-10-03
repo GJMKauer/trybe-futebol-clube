@@ -39,7 +39,7 @@ class LeaderboardService {
       return acc;
     }, [] as ILeaderboard[]);
 
-    return unsortedLeaderboard as unknown as ILeaderboard[];
+    return unsortedLeaderboard;
   }
 
   public async sortLeaderboard(): Promise<ILeaderboard[]> {
