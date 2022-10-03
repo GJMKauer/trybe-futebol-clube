@@ -8,6 +8,6 @@ const userController = new UserController();
 const loginValidation = new LoginValidation();
 
 route.post('/', loginValidation.loginV, userController.login);
-route.get('/validate', userController.validate);
+route.get('/validate', loginValidation.validateAuth, userController.validate);
 
 export default route;

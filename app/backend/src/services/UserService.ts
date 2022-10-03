@@ -1,9 +1,8 @@
-import * as bcrypt from 'bcryptjs';
-import * as Jwt from 'jsonwebtoken';
 import { IToken, JwtUser } from '../interfaces/IToken';
 import { IUser } from '../interfaces/IUser';
 import UserModel from '../database/models/UserModel';
-import { JWT_SECRET } from '../helpers';
+import bCryptValidation from '../helpers/bCryptPasswordValidation';
+import tokenGenerate from '../helpers/JWTGenerator';
 
 class UserService {
   private model = UserModel;
@@ -11,20 +10,16 @@ class UserService {
   public async login(email: string, password: string): Promise<IToken> {
     const user = await this.model.findOne({ where: { email }, raw: true }) as IUser;
 
-    if (!bcrypt.compareSync(password, user.password)) {
+    if (!bCryptValidation(password, user.password)) {
       return null as unknown as IToken;
     }
 
-    const token = Jwt.sign(
-      { userId: user.id },
-      JWT_SECRET,
-      { algorithm: 'HS256', expiresIn: '1d' },
-    );
+    const token = tokenGenerate(user);
 
     return token as unknown as IToken;
   }
 
-  public async validate(userData: JwtUser) {
+  public async validate(userData: JwtUser): Promise<string> {
     const { userId } = userData;
     const user = await this.model.findOne({ where: { id: userId }, raw: true }) as IUser;
 

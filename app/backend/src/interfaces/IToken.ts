@@ -1,7 +1,7 @@
 export interface IToken {
-  token: string,
+  token: string;
 }
 
-export type JwtUser = {
-  userId: number,
-};
+export interface JwtUser {
+  userId: number;
+}

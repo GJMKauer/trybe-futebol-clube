@@ -3,13 +3,14 @@ import { StatusCodes } from 'http-status-codes';
 import UserModel from '../database/models/UserModel';
 import UserService from '../services/UserService';
 import { IUser } from '../interfaces/IUser';
-import { invalidData, unfilledData, incorrectData } from '../helpers';
+import { invalidData, unfilledData, incorrectData, notFoundToken } from '../helpers';
 
 class LoginValidation {
   private model = UserModel;
   constructor(private userService = new UserService()) { }
 
-  public loginV = async (req: Request, res: Response, next: NextFunction) => {
+  public loginV = async (req: Request, res: Response, next: NextFunction):
+  Promise<Response | undefined> => {
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -26,6 +27,17 @@ class LoginValidation {
 
     if (!token) {
       return res.status(StatusCodes.UNAUTHORIZED).json({ message: invalidData });
+    }
+
+    next();
+  };
+
+  public validateAuth = async (req: Request, res: Response, next: NextFunction):
+  Promise<Response | undefined> => {
+    const { authorization } = req.headers;
+
+    if (!authorization) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: notFoundToken });
     }
 
     next();
